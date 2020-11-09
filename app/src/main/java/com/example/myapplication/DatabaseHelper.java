@@ -292,7 +292,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         cv.put(COLUMN_DESCRIPCION, desc);
         cv.put(COLUMN_DIRECCION, dir);
-        cv.put(COLUMN_TOTAL,getTotalPedido(items));
+        cv.put(COLUMN_TOTAL, getTotalPedido(items));
 
         long result = db.insert(TABLE_PEDIDO, null, cv);
         long result2 = -1;
@@ -351,6 +351,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         c.close();
         return precio;
     }
+
+    Cursor readAllDataProductoDetalles(String id) {
+        String query = "SELECT * FROM " + TABLE_PRODUCTO
+                + " JOIN " + TABLE_DETALLE_PEDIDO + " ON " + TABLE_PRODUCTO + "." + COLUMN_ID + " = " + TABLE_DETALLE_PEDIDO + "." + COLUMN_PRODUCTO_ID
+                + " WHERE " + TABLE_DETALLE_PEDIDO + "." + COLUMN_PEDIDO_ID + " = " + id;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if (db != null)
+            cursor = db.rawQuery(query, null);
+
+        return cursor;
+    }
+
+
     //termina pedido
 
     /*long addBook(String title, String author, byte[] image) {

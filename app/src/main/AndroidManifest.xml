@@ -7,7 +7,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="MandadosExpress"
+        android:label="Ventas"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
@@ -40,6 +40,9 @@
         <activity
             android:name=".AddActivityPedido"
             android:label="Agregar Pedido"
+            android:parentActivityName=".Pedido" />
+        <activity
+            android:name=".DetalleProducto"
             android:parentActivityName=".Pedido" />
         <activity android:name=".MainActivity">
             <intent-filter>

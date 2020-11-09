@@ -47,16 +47,15 @@ public class CustomAdapterPedido extends RecyclerView.Adapter<CustomAdapterPedid
         holder.pedido.setText(String.valueOf(desc.get(position)));
         holder.dir.setText(String.valueOf(dir.get(position)));
         holder.total.setText("Total: Q."+String.valueOf(total.get(position)));
-        /*holder.mainLayout.setOnClickListener(new View.OnClickListener() {
+        holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context,UpdateActivityProducto.class);
-                intent.putExtra("id",String.valueOf(prod_id.get(position)));
-                intent.putExtra("nombre",String.valueOf(nombre.get(position)));
-                intent.putExtra("precio",String.valueOf(precio.get(position)));
+                Intent intent = new Intent(context,DetalleProducto.class);
+                intent.putExtra("id",String.valueOf(ped_id.get(position)));
+                intent.putExtra("total",String.valueOf(total.get(position)));
                 activity.startActivityForResult(intent,1);
             }
-        });*/
+        });
     }
 
     @Override
