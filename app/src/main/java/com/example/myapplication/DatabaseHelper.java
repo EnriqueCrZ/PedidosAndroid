@@ -136,6 +136,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public String[] readAllMarcaArray(){
+
+        String selectQuery = "select * from " + TABLE_MARCA;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery,null);
+
+        ArrayList<String> spinnerContent = new ArrayList<String>();
+
+        if(cursor.moveToFirst()){
+            do{
+                spinnerContent.add(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ID)) + " - " + cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DESCRIPCION_MARCA)));
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        String[] allSpinner = new String[spinnerContent.size()];
+
+        return spinnerContent.toArray(allSpinner);
+    }
+
+    public String nombreMarca(String id){
+        String query = "SELECT " + COLUMN_DESCRIPCION_MARCA + " FROM " + TABLE_MARCA + " WHERE " + COLUMN_ID + " = " + id;
+        String marca = "";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(query,null);
+
+        if(c.getCount() == 1){
+            c.moveToFirst();
+            marca = c.getString(0);
+        }
+        c.close();
+        return marca;
+    }
+
     void deleteAllMarca() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_MARCA);
@@ -207,6 +244,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     void deleteAllProducto() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_PRODUCTO);
+    }
+
+    byte[] productPicture(String id){
+        String query = "SELECT " + COLUMN_IMAGEN + " FROM " + TABLE_PRODUCTO + " WHERE " + COLUMN_ID + " = " + id;
+        byte[] prod_pic = new byte[0];
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(query,null);
+
+
+        if(c.getCount() == 1){
+            c.moveToFirst();
+            prod_pic = c.getBlob(0);
+        }
+        c.close();
+        return prod_pic;
     }
 
     //termina producto

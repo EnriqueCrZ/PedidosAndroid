@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.myapplication">
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,13 +13,26 @@
         android:theme="@style/Theme.MyApplication">
         <activity
             android:name=".Marca"
+            android:label="Marcas"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".AddActivityMarca"
+            android:label="Agregar Marca"
             android:parentActivityName=".Marca" />
         <activity
             android:name=".UpdateActivityMarca"
             android:parentActivityName=".Marca" />
+        <activity
+            android:name=".Producto"
+            android:label="Productos"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".AddActivityProducto"
+            android:label="Agregar Producto"
+            android:parentActivityName=".Producto" />
+        <activity
+            android:name=".UpdateActivityProducto"
+            android:parentActivityName=".Producto" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
