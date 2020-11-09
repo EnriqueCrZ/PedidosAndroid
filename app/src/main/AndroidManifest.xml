@@ -33,6 +33,14 @@
         <activity
             android:name=".UpdateActivityProducto"
             android:parentActivityName=".Producto" />
+        <activity
+            android:name=".Pedido"
+            android:label="Pedidos"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".AddActivityPedido"
+            android:label="Agregar Pedido"
+            android:parentActivityName=".Pedido" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

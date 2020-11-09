@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:id="@+id/mainLayoutProducto">
+    android:id="@+id/mainLayoutPedido">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card"
@@ -18,51 +18,42 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/producto_rcl"
+                android:id="@+id/pedido_rcl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="15dp"
-                android:text="Producto"
+                android:text="Descripcion"
                 android:textAppearance="?attr/textAppearanceHeadline6"
-                app:layout_constraintStart_toEndOf="@+id/imagen_prod_rcl"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/marca_rcl"
+                android:id="@+id/dir_rcl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="Marca"
+                android:text="Direccion"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="?android:attr/textColorSecondary"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/producto_rcl"
-                app:layout_constraintTop_toBottomOf="@+id/producto_rcl" />
+                app:layout_constraintStart_toStartOf="@+id/pedido_rcl"
+                app:layout_constraintTop_toBottomOf="@+id/pedido_rcl" />
 
             <TextView
-                android:id="@+id/precio_rcl"
+                android:id="@+id/total_rcl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:text="Precio"
+                android:text="Total"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="?android:attr/textColorSecondary"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.511" />
 
-            <ImageView
-                android:id="@+id/imagen_prod_rcl"
-                android:layout_width="71dp"
-                android:layout_height="62dp"
-                android:contentDescription="X"
-                android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@android:drawable/ic_menu_report_image" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>

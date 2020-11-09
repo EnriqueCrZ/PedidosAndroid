@@ -26,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_DETALLE_PEDIDO = "detalle_pedido";
     public static final String COLUMN_ID2 = "_id";
-    public static final String COLUMN_PRODUCTO_ID = "pdoructo_id";
+    public static final String COLUMN_PRODUCTO_ID = "producto_id";
     public static final String COLUMN_PEDIDO_ID = "pedido_id";
 
     public static final String TABLE_PEDIDO = "pedido";
@@ -55,15 +55,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_PRECIO + " TEST)");
 
         db.execSQL("CREATE TABLE " + TABLE_DETALLE_PEDIDO + " (" + COLUMN_ID2 + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-        + COLUMN_PRODUCTO_ID + " INTEGER, "
-        + COLUMN_PEDIDO_ID + " INTEGER)");
+                + COLUMN_PRODUCTO_ID + " INTEGER, "
+                + COLUMN_PEDIDO_ID + " INTEGER)");
 
         db.execSQL("CREATE TABLE " + TABLE_PEDIDO
                 + " (" + COLUMN_ID3 + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUMN_DESCRIPCION + " TEXT, "
                 + COLUMN_DIRECCION + " TEXT, "
-                + COLUMN_IMAGEN + " BLOB, "
-                + COLUMN_MARCA_ID + " TEXT, "
                 + COLUMN_TOTAL + " TEXT)");
 
         db.execSQL("CREATE TABLE " + TABLE_MARCA
@@ -74,13 +72,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCTO);
-        //db.execSQL("DROP TABLE IF EXISTS " + TABLE_DETALLE_PEDIDO);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_DETALLE_PEDIDO);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PEDIDO);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MARCA);
         onCreate(db);
     }
 
-//inicia marca
+    //inicia marca
     long addMarca(String desc) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -136,19 +134,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public String[] readAllMarcaArray(){
+    public String[] readAllMarcaArray() {
 
         String selectQuery = "select * from " + TABLE_MARCA;
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery,null);
+        Cursor cursor = db.rawQuery(selectQuery, null);
 
         ArrayList<String> spinnerContent = new ArrayList<String>();
 
-        if(cursor.moveToFirst()){
-            do{
+        if (cursor.moveToFirst()) {
+            do {
                 spinnerContent.add(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ID)) + " - " + cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DESCRIPCION_MARCA)));
-            }while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
 
         cursor.close();
@@ -159,13 +157,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return spinnerContent.toArray(allSpinner);
     }
 
-    public String nombreMarca(String id){
+    public String nombreMarca(String id) {
         String query = "SELECT " + COLUMN_DESCRIPCION_MARCA + " FROM " + TABLE_MARCA + " WHERE " + COLUMN_ID + " = " + id;
         String marca = "";
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(query,null);
+        Cursor c = db.rawQuery(query, null);
 
-        if(c.getCount() == 1){
+        if (c.getCount() == 1) {
             c.moveToFirst();
             marca = c.getString(0);
         }
@@ -210,6 +208,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public String[] readAllProductoArray() {
+
+        String selectQuery = "select * from " + TABLE_PRODUCTO;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        ArrayList<String> spinnerContent = new ArrayList<String>();
+
+        if (cursor.moveToFirst()) {
+            do {
+                spinnerContent.add(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ID)) + " - " + cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NOMBRE)));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        String[] allSpinner = new String[spinnerContent.size()];
+
+        return spinnerContent.toArray(allSpinner);
+    }
+
     long updateProducto(String row_id, String nombre, String precio, String marca, byte[] imagen) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -246,14 +267,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + TABLE_PRODUCTO);
     }
 
-    byte[] productPicture(String id){
+    byte[] productPicture(String id) {
         String query = "SELECT " + COLUMN_IMAGEN + " FROM " + TABLE_PRODUCTO + " WHERE " + COLUMN_ID + " = " + id;
         byte[] prod_pic = new byte[0];
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(query,null);
+        Cursor c = db.rawQuery(query, null);
 
 
-        if(c.getCount() == 1){
+        if (c.getCount() == 1) {
             c.moveToFirst();
             prod_pic = c.getBlob(0);
         }
@@ -262,6 +283,75 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //termina producto
+    //inicia pedido
+
+    long addPedido(String desc, String dir, String[] items) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        ContentValues cv2 = new ContentValues();
+
+        cv.put(COLUMN_DESCRIPCION, desc);
+        cv.put(COLUMN_DIRECCION, dir);
+        cv.put(COLUMN_TOTAL,getTotalPedido(items));
+
+        long result = db.insert(TABLE_PEDIDO, null, cv);
+        long result2 = -1;
+
+        for (String item : items) {
+            String[] id = item.split("-");
+            cv2.put(COLUMN_PRODUCTO_ID, id[0]);
+            cv2.put(COLUMN_PEDIDO_ID, result);
+
+            result2 = db.insert(TABLE_DETALLE_PEDIDO, null, cv2);
+        }
+
+        if (result2 == -1)
+            Toast.makeText(context, "Fallo en agregar registro", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(context, "Pedido agregado exitosamente", Toast.LENGTH_SHORT).show();
+
+        return result;
+    }
+
+    Cursor readAllPedido() {
+        String query = "SELECT * FROM " + TABLE_PEDIDO;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if (db != null)
+            cursor = db.rawQuery(query, null);
+
+        return cursor;
+    }
+
+    void deleteAllPedidos() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + TABLE_PEDIDO);
+    }
+
+    Integer getTotalPedido(String[] items) {
+        int total = 0;
+        for (String item : items) {
+            String[] id = item.split("-");
+            total = total + getPrecioProducto(id[0]);
+        }
+        return total;
+    }
+
+    Integer getPrecioProducto(String id) {
+        String query = "SELECT " + COLUMN_PRECIO + " FROM " + TABLE_PRODUCTO + " WHERE " + COLUMN_ID + " = " + id;
+        int precio = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(query, null);
+
+        if (c.getCount() == 1) {
+            c.moveToFirst();
+            precio = c.getInt(0);
+        }
+        c.close();
+        return precio;
+    }
+    //termina pedido
 
     /*long addBook(String title, String author, byte[] image) {
         SQLiteDatabase db = this.getWritableDatabase();

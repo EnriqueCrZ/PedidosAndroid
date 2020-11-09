@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-    Button marca, producto;
+    Button marca, producto, pedido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
         marca = findViewById(R.id.btnMarca);
         producto = findViewById(R.id.btnProducto);
+        pedido = findViewById(R.id.btnPedido);
 
         marca.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -30,6 +31,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,Producto.class);
+                startActivity(intent);
+            }
+        });
+
+        pedido.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,Pedido.class);
                 startActivity(intent);
             }
         });

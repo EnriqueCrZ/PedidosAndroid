@@ -7,7 +7,7 @@
     tools:context=".Producto">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewProducto"
+        android:id="@+id/recyclerViewPedido"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/new_producto"
+        android:id="@+id/new_pedido"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
